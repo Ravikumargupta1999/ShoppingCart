@@ -6,16 +6,21 @@ import { itemContext } from "../itemContext";
 
 function ItemCard({ id, price,name }) {
 
-  const {total,setTotal} = useContext(itemContext);
+  const {total,setTotal,item,setItem} = useContext(itemContext);
 
   // const {setTotal} = useContext();
 
   const handleAdd = () => {
-    setTotal(total + price)
+    setTotal(total + price);
+    setItem(item+1);
   };
 
   const handleRemove = () => {
-
+    if(total <= 0){
+      return;
+    }
+    setTotal((prevState) => prevState-price);
+    setItem(item-1);
   };
 
   return (
