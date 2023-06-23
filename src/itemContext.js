@@ -15,9 +15,9 @@ function CustomItemConext({ children }) {
     const [total, setTotal] = useState(0);
     const [item, setItem] = useState(0);
     // const [cart, setCart] = useState(["CART"]);
-    const [showCart,setShowCart] = useState(false);
+    const [showCart, setShowCart] = useState(false);
 
-    const [cart,setCart] = useState([]);
+    const [cart, setCart] = useState([]);
 
 
 
@@ -26,39 +26,46 @@ function CustomItemConext({ children }) {
         const index = cart.findIndex((item) => item.id === prod.id);
 
         if (index === -1) {
-          setCart([...cart, { ...prod, qty: 1 }]);
-          console.log(cart);
-          setTotal(total + prod.price);
+            setCart([...cart, { ...prod, qty: 1 }]);
+            console.log(cart);
+            setTotal(total + prod.price);
         } else {
-          cart[index].qty++;
-          setCart(cart);
-          console.log(cart);
-          setTotal(total + cart[index].price);
+            cart[index].qty++;
+            setCart(cart);
+            console.log(cart);
+            setTotal(total + cart[index].price);
         }
         setItem(item + 1);
     };
 
-    const handleRemove = (price) => {
-        if (total <= 0) {
-            return;
+    const handleRemove = (id) => {
+        const index = cart.findIndex((item) => item.id === id);
+
+        if (index !== -1) {
+            cart[index].qty--;
+            setItem(item - 1);
+            setTotal(total - cart[index].price);
+            if (cart[index].qty === 0) {
+                cart.splice(index, 1);
+            }
+            setCart(cart);
         }
-        setTotal((prevState) => prevState - price);
-        setItem(item - 1);
     };
 
-    const clear = () =>{
+    const clear = () => {
         setTotal(0);
         setItem(0);
+        setCart([]);
     }
 
-    const toggle = () =>{
+    const toggle = () => {
         setShowCart(!showCart);
     }
     return (
         <itemContext.Provider value={
             {
-                total, 
-                item, 
+                total,
+                item,
                 handleAdd,
                 handleRemove,
                 clear,
@@ -66,7 +73,7 @@ function CustomItemConext({ children }) {
                 cart
             }
         }>
-            {showCart && <CartModal toggle ={toggle}/>}
+            {showCart && <CartModal toggle={toggle} />}
             {children}
         </itemContext.Provider>
     )
