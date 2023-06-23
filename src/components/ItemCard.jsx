@@ -29,7 +29,7 @@ function ItemCard({ id, price,name }) {
       <div className={styles.itemName}>{name}</div>
       <div className={styles.itemPrice}>&#x20B9; {price}</div>
       <div className={styles.itemButtonsWrapper}>
-        <button className={styles.itemButton} onClick={() => handleAdd(price)}>
+        <button className={styles.itemButton} onClick={() => handleAdd({ id, name, price })}>
           Add
         </button>
         <button className={styles.itemButton} onClick={() => handleRemove(price)}>

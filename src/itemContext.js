@@ -17,10 +17,24 @@ function CustomItemConext({ children }) {
     // const [cart, setCart] = useState(["CART"]);
     const [showCart,setShowCart] = useState(false);
 
+    const [cart,setCart] = useState([]);
 
 
-    const handleAdd = (price) => {
-        setTotal(total + price);
+
+    const handleAdd = (prod) => {
+        // console.log(prod);
+        const index = cart.findIndex((item) => item.id === prod.id);
+
+        if (index === -1) {
+          setCart([...cart, { ...prod, qty: 1 }]);
+          console.log(cart);
+          setTotal(total + prod.price);
+        } else {
+          cart[index].qty++;
+          setCart(cart);
+          console.log(cart);
+          setTotal(total + cart[index].price);
+        }
         setItem(item + 1);
     };
 
@@ -48,7 +62,8 @@ function CustomItemConext({ children }) {
                 handleAdd,
                 handleRemove,
                 clear,
-                toggle
+                toggle,
+                cart
             }
         }>
             {showCart && <CartModal toggle ={toggle}/>}
