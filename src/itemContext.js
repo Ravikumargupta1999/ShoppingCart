@@ -1,15 +1,40 @@
-import { createContext,useState } from "react";
+import { createContext, useState, useContext } from "react";
+
 
 const itemContext = createContext();
 
-function CustomItemConext({children}){
+function useValue() {
+    const value = useContext(itemContext);
+    return value;
+}
+
+
+
+function CustomItemConext({ children }) {
     const [total, setTotal] = useState(0);
-  const [item, setItem] = useState(0);
-    // console.log(props);
+    const [item, setItem] = useState(0);
+    // const [cart, setCart] = useState(["CART"]);
+
+
+
+    const handleAdd = (price) => {
+        setTotal(total + price);
+        setItem(item + 1);
+    };
+
+    const handleRemove = (price) => {
+        if (total <= 0) {
+            return;
+        }
+        setTotal((prevState) => prevState - price);
+        setItem(item - 1);
+    };
+
+
     return (
-        <itemContext.Provider value = {
+        <itemContext.Provider value={
             {
-                total,setTotal,item,setItem
+                total, item, handleAdd,handleRemove
             }
         }>
             {children}
@@ -17,5 +42,5 @@ function CustomItemConext({children}){
     )
 }
 
-export{itemContext};
+export { itemContext, useValue };
 export default CustomItemConext;
